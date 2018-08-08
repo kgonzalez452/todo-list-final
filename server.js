@@ -1,7 +1,12 @@
-var express = require ('express');
+var express = require('express');
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
 var app = express();
 
 var tigers = ['john', 'mathias', 'pepe', 'pedro'];
+
+app.use(cookieParser());
+app.use(session({secret: 'qwerty'}));
 
 require('./router/main')(app, tigers);
 
