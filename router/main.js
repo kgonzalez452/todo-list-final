@@ -1,41 +1,33 @@
 module.exports = function(app, tigers)
 {
     app.get('/', function(req, res){
-        res.send(getTigers(tigers));
+        res.render('index', {ptitle:"Tigers", tigers: tigers});
     });
 
     app.get('/add', function(req, res){
-        res.render('add.html');
+        res.render('add', {ptitle:"Add tiger"});
     });
 
     app.get('/add-submit', function(req, res){
         tigers.push(req.query.name);
-        res.send(getTigers(tigers));
+        res.redirect('/');
     });
 
     app.get('/update', function(req, res){
-        res.render('update.html');
+        res.render('update', {ptitle:"Update tiger"});
     });
 
     app.get('/update-submit', function(req, res){
         tigers.splice(req.query.pos, 1, req.query.name);
-        res.send(getTigers(tigers));
+        res.redirect('/');
     });
 
     app.get('/del', function(req, res){
-        res.render('delete.html');
+        res.render('delete', {ptitle:"Delete tiger"});
     });
 
     app.get('/del-submit', function(req, res){
         tigers.splice(req.query.pos, 1);
-        res.send(getTigers(tigers))
+        res.redirect('/');
     });
-}
-
-function getTigers(tigers) {
-    var tgs = "";
-    for(var i=0; i<tigers.length; i++){
-        tgs += '<li>'+tigers[i]+'</li>';
-    }
-    return '<ol>'+tgs+'</ol>';
 }

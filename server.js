@@ -1,7 +1,7 @@
 var express = require ('express');
 var app = express();
 
-var tigers = ['john', 'mathias', 'pepe'];
+var tigers = ['john', 'mathias', 'pepe', 'pedro'];
 
 require('./router/main')(app, tigers);
 
