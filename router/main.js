@@ -1,73 +1,78 @@
-module.exports = function(app, tigers, fs)
+module.exports = function(app, todos, fs)
 {
     //
     // index file
     //
     app.get('/', function(req, res){
         if(req.session.username) {
-            res.render('index', {ptitle:"Tigers", tigers: tigers, username: req.session.username});
+            res.render('index', {ptitle:"todos", todos: todos, username: req.session.username});
         }
         else res.redirect('/login');
     });
 
     //
-    // add a new tiger
+    // add a new todo
     //
-    app.get('/add', function(req, res){
+    // app.get('/add', function(req, res){
+    //     if(req.session.username) {
+    //         res.render('add', {ptitle:"Add todo", username: req.session.username});
+    //     }
+    //     else res.redirect('/login');
+    // });
+    app.get('/', function(req, res){
         if(req.session.username) {
-            res.render('add', {ptitle:"Add tiger", username: req.session.username});
+            // res.render('index', {todos:todos, username: req.session.username});
         }
         else res.redirect('/login');
     });
 
     app.get('/add-submit', function(req, res){
-        // save tiger to the array
-        tigers.push(req.query.name);
+        // save todo to the array
+        todos.push(req.query.name);
 
-        // save tiger to the file
-        fs.writeFile(__dirname+'/../tigers', JSON.stringify(tigers), 'utf8');
+        // save todo to the file
+        //fs.writeFile(__dirname+'/../todos', JSON.stringify(todos), 'utf8');
 
         // redirect to home
         res.redirect('/');
     });
 
     // 
-    // update a tiger
+    // update a todo
     //
     app.get('/update', function(req, res){
         if(req.session.username) {
-            res.render('update', {ptitle:"Update tiger", username: req.session.username});
+            res.render('update', {ptitle:"Update todo", username: req.session.username});
         }
         else res.redirect('/login');
     });
 
     app.get('/update-submit', function(req, res){
-        // update tiger array
-        tigers.splice(req.query.pos, 1, req.query.name);
+        // update todo array
+        todos.splice(req.query.pos, 1, req.query.name);
 
-        // update tiger from the file
-        fs.writeFile(__dirname+'/../tigers', JSON.stringify(tigers), 'utf8');
+        // update todo from the file
 
         // redirect to home
         res.redirect('/');
     });
 
     //
-    // delete a tiger
+    // delete a todo
     //
     app.get('/del', function(req, res){
         if(req.session.username) {
-            res.render('delete', {ptitle:"Delete tiger", username: req.session.username});
+            res.render('delete', {ptitle:"Delete todo", username: req.session.username});
         }
         else res.redirect('/login');
     });
 
     app.get('/del-submit', function(req, res){
         // delete from array
-        tigers.splice(req.query.pos, 1);
+        todos.splice(req.query.pos, 1);
 
-        // delete tiger from the file
-        fs.writeFile(__dirname+'/../tigers', JSON.stringify(tigers), 'utf8');
+        // delete todo from the file
+        
 
         // redirect to home
         res.redirect('/');
@@ -93,7 +98,7 @@ module.exports = function(app, tigers, fs)
     //
     // ajax calls
     //
-    app.get('/get-tigers', function(req, res){
-        res.json({tigers: tigers});
+    app.get('/get-todos', function(req, res){
+        res.json({todos: todos});
     });
 }

@@ -1,16 +1,51 @@
 <% include ../includes/header.ejs %>
 
-<h1>Tigers (<%= tigers.length %>)</h1>
+<h1>To Do List (<%= todos.length %>)</h1>
+
+<form action="add-submit" method="get">
+    <input type="text" name="name" required/>
+    <input type="submit" value="Add todo" />
+</form>
+
 <ol>
-    <% tigers.forEach(function(tiger, i) { %>
-        <li <% if(i % 2 != 0) { %> class="bg-primary" <% } %> >
-            <%= tiger %>
+    <% todos.forEach(function(todo, i) { %>
+        <li <% if(i % 2 != 0) { %> class="bg-success" <% } %> >
+            <%= todo %>
         </li>
     <% }); %>
 </ol>
 
-<a href="/add">Add tiger</a><br/>
-<a href="/update">Update tiger</a><br/>
-<a href="/del">Delete tiger</a><br/>
+<form action="update-submit" method="get">
+    <input type="number" name="pos" required/>
+    <input type="text" name="name" required/>
+    <input type="submit" value="Update Todo" />
+</form>
+<ul id="todos-list"></ul>
+<a href="#" onclick="seetodos();">See Detailed Todos</a>
+<br/>
+<script>
+    function seetodos() {
+        $.ajax({
+            url: '/get-todos',
+            data: false,
+            success: callback,
+            dataType: 'json'
+        });
+    }
+
+    function callback(data) {
+        data.todos.forEach(function (todo, i) {
+            $('#todos-list').append('<li>' + i + ': ' + todo + '</li>');
+        });
+    }
+</script>
+
+
+<br/>
+<form action="del-submit" method="get">
+    <input type="number" name="pos" required/>
+    <input type="submit" value="Delete Todo" />
+</form>
+
 
 <% include ../includes/footer.ejs %>

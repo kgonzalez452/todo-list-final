@@ -2,16 +2,17 @@ var express = require('express');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var fs = require('fs');
+var mysql = require('mysql');
 var app = express();
 
-// load the tigers
-var tigers = [];
-fs.readFile(__dirname+'/tigers', 'utf8', function(err, data){
-    // load the tigers if there is no error
-    if( ! err) tigers = JSON.parse(data);
+// load the todos
+var todos = [];
+fs.readFile(__dirname+'/todos', 'utf8', function(err, data){
+    // load the todos if there is no error
+    if( ! err) todos = JSON.parse(data);
 
     // include routers
-    require('./router/main')(app, tigers, fs);
+    require('./router/main')(app, todos, fs);
 
     // hande 404 errors
     app.use(function(req, res){
@@ -33,5 +34,12 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
+// connection to mysql
+var connection = mysql.createConnection({
+    host: '127.0.0.1',
+    user: 'root',
+    password: 'root'
+});
+
 // start the server
-var server = app.listen(8080);
+var server = app.listen(8090);
